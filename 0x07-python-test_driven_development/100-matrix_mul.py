@@ -1,55 +1,108 @@
 #!/usr/bin/python3
-"""
-Contains the matrix_mul function
-"""
+"""the matrix_mul module"""
 
 
 def matrix_mul(m_a, m_b):
-    """Multiply two matrices(lists of lists of integers/floats)"""
-    if type(m_a) is not list:
-        raise TypeError("m_a must be a list")
-    l1 = len(m_a)
-    if l1 == 0:
-        raise ValueError("m_a can't be empty")
-    l2 = None
-    for i in m_a:
-        if type(i) is not list:
-            raise TypeError("m_a must be a list of lists")
-        if l2 is None:
-            l2 = len(i)
-            if l2 == 0:
-                raise ValueError("m_a can't be empty")
-        if l2 != len(i):
-            raise TypeError("each row of m_a must should be of the same size")
-        for j in i:
-            if type(j) is not int and type(j) is not float:
-                raise TypeError("m_a should contain only integers or floats")
-    if type(m_b) is not list:
-        raise TypeError("m_b must be a list")
+    """multiplies 2 matrices
+    Args:
+        m_a: the first matrix
+        m_b: the second matrix
+    Raises:
+        TypeError: if either matrix != list , list of lists, if elements are
+               not int or float, or inner lists are not of the same len
+        ValueError: if lists are empty, or items cannot be multiplied
+    Returns: the product matrix
+    """
+    a_list = True
+    b_list = True
+    aInner_list = True
+    bInner_list = True
+    a_same = True
+    b_same = True
+    a_number = True
+    b_number = True
+    a_contains = True
+    b_contains = True
+    a_inner_contains = True
+    b_inner_contains = True
+    mul = True
+
+    if not isinstance(m_a, list):
+        a_list = False
+    if not a_list:
+        raise TypeError('m_a must be a list')
+    if not isinstance(m_b, list):
+        b_list = False
+    if not b_list:
+        raise TypeError('m_b must be a list')
+
+    if len(m_a) == 0:
+        a_contains = False
     if len(m_b) == 0:
-        raise ValueError("m_b can't be empty")
-    l3 = None
-    for i in m_b:
-        if type(i) is not list:
-            raise TypeError("m_b must be a list of lists")
-        if l3 is None:
-            l3 = len(i)
-            if l3 == 0:
-                raise ValueError("m_b can't be empty")
-        if l3 != len(i):
-            raise TypeError("each row of m_b must should be of the same size")
-        for j in i:
-            if type(j) is not int and type(j) is not float:
-                raise TypeError("m_b should contain only integers or floats")
-    if l2 != len(m_b):
-        raise ValueError("m_a and m_b can't be multiplied")
-    matrix = []
-    for i in range(l1):
-        l = []
-        for j in range(l3):
-            n = 0
-            for k in range(l2):
-                n += m_a[i][k] * m_b[k][j]
-            l.append(n)
-        matrix.append(l)
-    return matrix
+        b_contains = False
+
+    for inner in m_a:
+        if not isinstance(inner, list):
+            aInner_list = False
+            raise TypeError('m_a must be a list of lists')
+        if len(inner) == 0:
+            a_inner_contains = False
+            raise TypeError('m_a can\'t be empty')
+        if len(inner) != len(m_a[0]):
+            a_same = False
+        for item in inner:
+            if not isinstance(item, int) and not isinstance(item, float):
+                a_number = False
+
+    for inner in m_b:
+        if not isinstance(inner, list):
+            bInner_list = False
+            raise TypeError('m_b must be a list of lists')
+        if len(inner) == 0:
+            b_inner_contains = False
+            raise ValueError('m_b can\'t be empty')
+        if len(inner) != len(m_b[0]):
+            b_same = False
+        for item in inner:
+            if not isinstance(item, int) and not isinstance(item, float):
+                b_number = False
+
+    if not aInner_list:
+        raise TypeError('m_a must be a list of lists')
+    if not bInner_list:
+        raise TypeError('m_b must be a list of lists')
+    if not a_contains:
+        raise ValueError('m_a can\'t be empty')
+    if not b_contains:
+        raise ValueError('m_b can\'t be empty')
+    if not a_inner_contains:
+        raise ValueError('m_a can\'t be empty')
+    if not b_inner_contains:
+        raise ValueError('m_b can\'t be empty')
+    if not a_number:
+        raise TypeError('m_a should contain only integers or floats')
+    if not b_number:
+        raise TypeError('m_b should contain only integers or floats')
+    if not a_same:
+        raise TypeError('each row of m_a must be of the same size')
+    if not b_same:
+        raise TypeError('each row of m_b must be of the same size')
+    if len(m_a[0]) != len(m_b):
+        mul = False
+    if not mul:
+        raise ValueError('m_a and m_b can\'t be multiplied')
+
+    product = [[] for item in range(len(m_a))]
+
+    for item in range(len(m_a)):
+        for item2 in range(len(m_b[0])):
+            answer = 0
+            for span in range(len(m_b)):
+                answer += m_a[item][span] * m_b[span][item2]
+            product[item].append(answer)
+
+    return product
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testfile("tests/100-matrix_mul.txt")
