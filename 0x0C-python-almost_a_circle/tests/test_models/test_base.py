@@ -435,7 +435,7 @@ class Test_Base(unittest.TestCase):
         try:
             os.remove("Square.csv")
         except Exception:
-            pass
 
-if __name__ == '__main__':
+
+if __name__ == '__main__':   
     unittest.main()
