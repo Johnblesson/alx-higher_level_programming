@@ -1,4 +1,4 @@
-Learning:
+# Learning:
  - Why jQuery make front-end programming so easy
  - How to select HTML elements in Javascript
  - How to select HTML elements with jQuery
