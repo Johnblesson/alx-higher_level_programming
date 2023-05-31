@@ -1,3 +1,1 @@
-# 0x14-javascript-web_scraping
-
-Javascript web scraping
+# Solutions to tasks on JavaScript - Web scraping
